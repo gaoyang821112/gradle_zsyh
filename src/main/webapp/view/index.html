@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabs - jQuery Mobile Demos</title>
+    <link rel="stylesheet" href="../static/css/themes/default/jquery.mobile-1.4.5.min.css">
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/js/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript">
+        function init(){
+            getUserList();
+        }
+        //拼接参数方法
+        function getUserList() {
+            $.ajax({
+                type: "get",
+                url: "../product/userList",
+                dataType: "json",
+                success:function(data){
+                    var tableString = "";
+                    for (var i = 0; i< data.length; i++){
+                        tableString += '<input type="checkbox" id="label_' + data[i].p9 + '" name="label_' + data[i].p9 + '">'
+                                    + '<label class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off ui-first-child" for="label_' + data[i].p9 + '">' + data[i].userName + '</label>';
+                    }
+                    $("#userGroup1").html(tableString);
+//                    $("#userGroup2").html(tableString);
+                }
+            });
+        }
+    </script>
+</head>
+<body onload="init()">
+<div data-role="page" class="jqm-demos" data-quicklinks="true">
+
+    <div role="main" class="ui-content jqm-content">
+
+        <h1>活动平台</h1>
+
+        <div data-demo-html="true">
+            <div data-role="tabs" id="tabs">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#one" data-ajax="false">下午三点</a></li>
+                        <li><a href="#two" data-ajax="false">周三五折</a></li>
+                        <li><a href="#three" data-ajax="false">实物</a></li>
+                    </ul>
+                </div>
+                <div id="one">
+                    <form>
+                        <fieldset data-role="controlgroup" id="userGroup1">
+                            <input type="checkbox" name="checkbox-v-1a" id="checkbox-v-1a">
+                            <label for="checkbox-v-1a">One</label>
+                            <input type="checkbox" name="checkbox-v-1b" id="checkbox-v-1b">
+                            <label for="checkbox-v-1b">Two</label>
+                            <input type="checkbox" name="checkbox-v-1c" id="checkbox-v-1c">
+                            <label for="checkbox-v-1c">Three</label>
+                        </fieldset>
+                    </form>
+                </div>
+                <div id="two">
+                    <form>
+                        <fieldset data-role="controlgroup" id="userGroup2">
+                            <input type="checkbox" name="checkbox-v-2a" id="checkbox-v-2a">
+                            <label for="checkbox-v-2a">One</label>
+                            <input type="checkbox" name="checkbox-v-2b" id="checkbox-v-2b">
+                            <label for="checkbox-v-2b">Two</label>
+                            <input type="checkbox" name="checkbox-v-2c" id="checkbox-v-2c">
+                            <label for="checkbox-v-2c">Three</label>
+                        </fieldset>
+                    </form>
+                </div>
+                <div id="three">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
