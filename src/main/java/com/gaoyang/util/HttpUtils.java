@@ -19,6 +19,7 @@ public class HttpUtils {
 				strbuffer.append("=");
 				strbuffer.append(value);
 				strbuffer.append("&");
+
 			}
 			paramUrl = strbuffer.toString();
 			paramUrl = paramUrl.substring(0, paramUrl.length() - 1);
