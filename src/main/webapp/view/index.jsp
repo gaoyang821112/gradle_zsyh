@@ -67,7 +67,7 @@
                     <ul>
                         <li><a href="#one" data-ajax="false">下午三点</a></li>
                         <li><a href="#two" data-ajax="false">周三五折</a></li>
-                        <li><a href="#three" data-ajax="false">实物</a></li>
+                        <li><a href="#three" data-ajax="false">周三</a></li>
                     </ul>
                 </div>
                 <div id="one">

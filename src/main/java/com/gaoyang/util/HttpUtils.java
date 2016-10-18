@@ -1,5 +1,6 @@
 package com.gaoyang.util;
 
+import com.gaoyang.bean.DianPingUser;
 import com.gaoyang.bean.ShiHuiHttpParams;
 
 import java.io.*;
@@ -211,12 +212,13 @@ public class HttpUtils {
 			connection.setRequestProperty("accept", "*/*");
 			connection.setRequestProperty("connection", "Keep-Alive");
 			connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+			connection.setRequestProperty("Cookie", "Cookie:_hc.v=\"\\\"2000748c-0f57-47e5-b980-dc70e57ab20d.1472525902\\\"\"; checkInCloseState=ignored; likeTips=ignored; __utma=1.1676118817.1472525940.1476338775.1476369631.13; __utmc=1; __utmz=1.1476200547.11.2.utmcsr=dianping.com|utmccn=(referral)|utmcmd=referral|utmcct=/beijing; PHOENIX_ID=0a016717-157be90017f-2397ba; dper=d9206bcb716530924357c33d251099b3f950c04555d7c819adb41b1a5820d3a4; ll=7fd06e815b796be3df069dec7836c3df; ua=%E6%96%B0%E8%8B%B1%E6%B5%8B%E8%AF%95; ctu=6c46d826e05ec92997f124e79d03bfc4e118cea3b972258ad1a4ba2b01869a18; uamo=18518982648; isChecked=checked; JSESSIONID=713ED5B8A3E31D0E7F6552EA96EF8280; aburl=1; cy=2; cye=beijing");
 			connection.connect();
 			Map map = connection.getHeaderFields();
 //			for (Object key : map.keySet()) {
 //				System.out.println(key + "--->" + map.get(key));
 //			}
-			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
 			String line;
 			while ((line = in.readLine()) != null) {
 				result = result + line;
@@ -410,6 +412,69 @@ public class HttpUtils {
 
 			connection.connect();
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result = result + line;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+
+
+	public static String setDianPingRequest(Map<String, String> paramMap, DianPingUser user) {
+		String paramUrl = "";
+		StringBuffer strbuffer = new StringBuffer();
+		String result = "";
+		BufferedReader in = null;
+		try {
+
+			if ((paramMap != null) && (paramMap.size() > 0)) {
+				for (Map.Entry entry : paramMap.entrySet()) {
+					String key = String.valueOf(entry.getKey());
+					String value = String.valueOf(entry.getValue());
+					strbuffer.append(key);
+					strbuffer.append("=");
+					strbuffer.append(value);
+					strbuffer.append("&");
+				}
+				paramUrl = strbuffer.toString();
+				paramUrl = paramUrl.substring(0, paramUrl.length() - 1);
+			}
+			String url = "http://s.dianping.com/ajax/json/activity/offline/saveApplyInfo?" + paramUrl;
+			URL realUrl = new URL(url);
+
+			URLConnection connection = realUrl.openConnection();
+			connection.setRequestProperty("Accept","application/json, text/javascript");
+			connection.setRequestProperty("Accept-Encoding","gzip, deflate");
+			connection.setRequestProperty("Accept-Language","zh-CN,zh;q=0.8");
+			connection.setRequestProperty("Connection","keep-alive");
+			connection.setRequestProperty("Content-Length","251");
+			connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8;");
+			connection.setRequestProperty("Host","s.dianping.com");
+			connection.setRequestProperty("Origin","http://s.dianping.com");
+			connection.setRequestProperty("Referer","http://s.dianping.com/event/" + paramMap.get("offlineActivityId"));
+			connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36");
+			connection.setRequestProperty("X-Request","JSON");
+			connection.setRequestProperty("X-Requested-With","XMLHttpRequest");
+			connection.setRequestProperty("Cookie", "_hc.v=\"\\\"2000748c-0f57-47e5-b980-dc70e57ab20d.1472525902\\\"\"; dper=" + user.getUserId() + "; ua=" + user.getUa() + "; checkInCloseState=ignored; likeTips=ignored; __utma=1.1676118817.1472525940.1476200547.1476338775.12; __utmc=1; __utmz=1.1476200547.11.2.utmcsr=dianping.com|utmccn=(referral)|utmcmd=referral|utmcct=/beijing; ll=7fd06e815b796be3df069dec7836c3df; PHOENIX_ID=0a0102f6-157bca62826-e8532; isChecked=checked; JSESSIONID=2BE2C723CFE01082C220EE2A22D06E62; aburl=1; cy=2; cye=beijing");
+			connection.connect();
+			in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
 			String line;
 			while ((line = in.readLine()) != null) {
 				result = result + line;
