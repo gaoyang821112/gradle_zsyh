@@ -2,11 +2,13 @@ package com.gaoyang.service;
 
 import com.gaoyang.bean.BaojieUser;
 import com.gaoyang.bean.DianPingUser;
+import com.gaoyang.bean.Product1;
 import com.gaoyang.bean.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +39,14 @@ public class UserService {
 
 	public List<DianPingUser> getDianPingList() {
 		return mongoTemplate.findAll(DianPingUser.class, PRODUCT_DIANPING_USER_COLLECTION);
+	}
+
+	public void update(String tel, String column, String value) {
+		Query query = new Query(Criteria.where("tel").is(tel));
+		Update update = Update.update(column, value);
+		this.mongoTemplate.updateFirst(query, update, PRODUCT_DIANPING_USER_COLLECTION);
+
+
 	}
 
 

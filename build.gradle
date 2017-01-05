@@ -59,12 +59,32 @@ dependencies {
 
             'jstl:jstl:1.2',
 
-            'javax.websocket:javax.websocket-api:1.1'
+            'javax.websocket:javax.websocket-api:1.1',
+
+            'junit:junit:4.11'
+
+//            'net.sourceforge.tess4j:tess4j:3.2.1',
+//
+//            'net.sf:ghost4j:0.4.5',
+//
+//            'com.kenai.nbpwr:com-sun-media-imageio:1.1-201002281504'
 
     )
 
-    task hello {
-        doLast { println "hello" }
-    }
+//    task hello {
+//        doLast { println "hello" }
+//    }
 
+}
+
+jettyRun{
+    webAppSourceDirectory=file("$projectDir/src/main/webapp")
+    httpPort=8080
+    contextPath=project.name
+    reload="automatic"
+    scanIntervalSeconds = 1
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }

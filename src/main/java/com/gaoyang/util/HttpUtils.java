@@ -5,6 +5,8 @@ import com.gaoyang.bean.ShiHuiHttpParams;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class HttpUtils {
@@ -357,8 +359,8 @@ public class HttpUtils {
 		}
 		return result;
 	}
-	static String getCookie(String name,String cookieStr){
-		String cookie = "";
+	public static String getCookie(String name,String cookieStr){
+			String cookie = "";
 		if(cookieStr != null && !"".equals(cookieStr)){
 			cookieStr = cookieStr.replaceAll("^\\s*$", "");
 			String[] cookies = cookieStr.split(";");
@@ -436,6 +438,119 @@ public class HttpUtils {
 		return result;
 	}
 
+	public static String setDianPingLoginRequest(String address, Map<String, String> paramMap) {
+		String paramUrl = "";
+		StringBuffer strbuffer = new StringBuffer();
+		String result = "";
+		BufferedReader in = null;
+		try {
+
+			if ((paramMap != null) && (paramMap.size() > 0)) {
+				for (Map.Entry entry : paramMap.entrySet()) {
+					String key = String.valueOf(entry.getKey());
+					String value = String.valueOf(entry.getValue());
+					strbuffer.append(key);
+					strbuffer.append("=");
+					strbuffer.append(value);
+					strbuffer.append("&");
+				}
+				paramUrl = strbuffer.toString();
+				paramUrl = paramUrl.substring(0, paramUrl.length() - 1);
+			}
+			String url = address + "?" + paramUrl;
+			URL realUrl = new URL(url);
+
+			URLConnection connection = realUrl.openConnection();
+			connection.setRequestProperty("Accept","*/*");
+			connection.setRequestProperty("Accept-Encoding","gzip, deflate, br");
+			connection.setRequestProperty("Accept-Language","zh-CN,zh;q=0.8");
+			connection.setRequestProperty("Connection","keep-alive");
+			connection.setRequestProperty("Cookie", "PHOENIX_ID=0a01783d-1592a984866-5694e8; _hc.v=\"970e51a7-8d29-4c94-b8d1-fb74b0a689aa.1482481011\"");
+			connection.setRequestProperty("Host","www.dianping.com");
+			connection.setRequestProperty("Referer","https://mlogin.dianping.com/login/password?redir=https%3A%2F%2Fm.dianping.com%2Fmy");
+			connection.setRequestProperty("User-Agent","Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36");
+
+			connection.connect();
+			in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result = result + line;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+
+	public static List<String> returnCookies(String address, Map<String, String> paramMap) {
+		String paramUrl = "";
+		StringBuffer strbuffer = new StringBuffer();
+		List<String> result = new ArrayList<>();
+		BufferedReader in = null;
+		try {
+
+			if ((paramMap != null) && (paramMap.size() > 0)) {
+				for (Map.Entry entry : paramMap.entrySet()) {
+					String key = String.valueOf(entry.getKey());
+					String value = String.valueOf(entry.getValue());
+					strbuffer.append(key);
+					strbuffer.append("=");
+					strbuffer.append(value);
+					strbuffer.append("&");
+				}
+				paramUrl = strbuffer.toString();
+				paramUrl = paramUrl.substring(0, paramUrl.length() - 1);
+			}
+			String url = address + "?" + paramUrl;
+			URL realUrl = new URL(url);
+
+			URLConnection connection = realUrl.openConnection();
+			connection.setRequestProperty("Accept","*/*");
+			connection.setRequestProperty("Accept-Encoding","gzip, deflate, br");
+			connection.setRequestProperty("Accept-Language","zh-CN,zh;q=0.8");
+			connection.setRequestProperty("Connection","keep-alive");
+			connection.setRequestProperty("Cookie", "PHOENIX_ID=0a01783d-1592a984866-5694e8; _hc.v=\"970e51a7-8d29-4c94-b8d1-fb74b0a689aa.1482481011\"");
+			connection.setRequestProperty("Host","www.dianping.com");
+			connection.setRequestProperty("Referer","https://mlogin.dianping.com/login/password?redir=https%3A%2F%2Fm.dianping.com%2Fmy");
+			connection.setRequestProperty("User-Agent","Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36");
+
+			connection.connect();
+			Map<String, List<String>> cookies = connection.getHeaderFields();
+			result = cookies.get("Set-Cookie");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return result;
+	}
+
 
 	public static String setDianPingRequest(Map<String, String> paramMap, DianPingUser user) {
 		String paramUrl = "";
@@ -472,7 +587,7 @@ public class HttpUtils {
 			connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36");
 			connection.setRequestProperty("X-Request","JSON");
 			connection.setRequestProperty("X-Requested-With","XMLHttpRequest");
-			connection.setRequestProperty("Cookie", "_hc.v=\"\\\"2000748c-0f57-47e5-b980-dc70e57ab20d.1472525902\\\"\"; dper=" + user.getUserId() + "; ua=" + user.getUa() + "; checkInCloseState=ignored; likeTips=ignored; __utma=1.1676118817.1472525940.1476200547.1476338775.12; __utmc=1; __utmz=1.1476200547.11.2.utmcsr=dianping.com|utmccn=(referral)|utmcmd=referral|utmcct=/beijing; ll=7fd06e815b796be3df069dec7836c3df; PHOENIX_ID=0a0102f6-157bca62826-e8532; isChecked=checked; JSESSIONID=2BE2C723CFE01082C220EE2A22D06E62; aburl=1; cy=2; cye=beijing");
+			connection.setRequestProperty("Cookie", "_hc.v=\"\\\"2000748c-0f57-47e5-b980-dc70e57ab20d.1472525902\\\"\"; dper=" + user.getDper() + "; ua=" + user.getUa() + "; checkInCloseState=ignored; likeTips=ignored; __utma=1.1676118817.1472525940.1476200547.1476338775.12; __utmc=1; __utmz=1.1476200547.11.2.utmcsr=dianping.com|utmccn=(referral)|utmcmd=referral|utmcct=/beijing; ll=7fd06e815b796be3df069dec7836c3df; PHOENIX_ID=0a0102f6-157bca62826-e8532; isChecked=checked; JSESSIONID=2BE2C723CFE01082C220EE2A22D06E62; aburl=1; cy=2; cye=beijing");
 			connection.connect();
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
 			String line;

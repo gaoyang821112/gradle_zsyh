@@ -20,7 +20,15 @@
         documents and your domain classes. -->
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg ref="mongo"/>
+        <constructor-arg name="userCredentials" ref="userCredentials" />
         <constructor-arg name="databaseName" value="zsyh"/>
+    </bean>
+
+    <!--设置用户验证-->
+
+    <bean id="userCredentials" class="org.springframework.data.authentication.UserCredentials">
+        <constructor-arg name="username" value="${mongodb.username}"/>
+        <constructor-arg name="password" value="${mongodb.password}"/>
     </bean>
 
 </beans>

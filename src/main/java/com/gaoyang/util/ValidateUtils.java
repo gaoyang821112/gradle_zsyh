@@ -50,7 +50,7 @@ public class ValidateUtils {
 	}
 	
 	
-	public static String b(String paramString){
+	public static String getMd5UpperCase(String paramString){
 		byte[] arrayOfByte = new byte[0];
 		try {
 			MessageDigest localMessageDigest = MessageDigest.getInstance("MD5");
@@ -72,13 +72,13 @@ public class ValidateUtils {
 	public static void main(String[] args) {
 		HashMap localHashMap = new HashMap();
 //		localHashMap.put("orderAmount", "8200");
-		localHashMap.put("orderAmount", "4500");
+		localHashMap.put("orderAmount", "1800");
         localHashMap.put("quantity", "1");
         localHashMap.put("orderCardType", "4");
-        localHashMap.put("productId", "0143000004896");
-        localHashMap.put("userId", "17A8AF7157CD46FBAC97188626CA08A0");
+        localHashMap.put("productId", "0060000005054");
+        localHashMap.put("userId", "9861c5e60f3c48fd98579918c4c44a1f");
         String str1 = ValidateUtils.a(localHashMap, "asc");
-        String mac = ValidateUtils.b(str1 + "0102030405060708");
+        String mac = ValidateUtils.getMd5UpperCase(str1 + "0102030405060708");
 		System.out.println(mac);
 	}
 }
