@@ -2,4 +2,7 @@
 classes
 .gradle
 build
-
+/build/
+/.idea/
+/.gradle/
+/classes/
