@@ -23,6 +23,10 @@ import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Controller
 @RequestMapping("/product")
@@ -233,24 +237,20 @@ public class ProductController {
 		return userService.getUserList();
 	}
 
-
-
-
-
-
-
-
 	public volatile static boolean switchActivity = false;
 
 	@RequestMapping(value = "/submit3hour", method = RequestMethod.POST)
-	public String submit3hour (HttpServletRequest request, HttpSession httpSession) {
-
+	@ResponseBody
+	public LocalResponse submit3hour (HttpServletRequest request, HttpSession httpSession) {
 		switchActivity = true;
+		LocalResponse response = new LocalResponse();
+		StringBuffer output = new StringBuffer();
 		String userStr1 = request.getParameter("userStr1");
 		String[] user1Array = userStr1.split(",");
 		String[] product1Array = request.getParameterValues("product1Box");
 		Map<String, String> initParams = paramService.getParamMap();
 		Map<String, Product1> product1Map = (Map<String, Product1>)httpSession.getAttribute("product1Map");
+		ExecutorService pool = Executors.newFixedThreadPool(10);
 		for (int i = 0; i < user1Array.length; i++) {
 			if (StringUtils.isNotBlank(user1Array[i])) {
 				User userBean = userService.findUserByUserId(user1Array[i]);
@@ -273,21 +273,34 @@ public class ProductController {
 					Map<String, String> logMap = new HashedMap();
 					logMap.put("userName", userBean.getUserName());
 					logMap.put("productName", productBean.getProductName());
-					new Thread(new BankThread(Integer.parseInt(initParams.get("times")), params, logMap)).start();
+					try {
+						Callable callable = new BankThread(Integer.parseInt(initParams.get("times")), params, logMap);
+						Future future = pool.submit(callable);
+						output.append(future.get() + "</br>");
+						response.setData(output.toString());
+						System.out.println(">>" + future.get());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+//					new Thread(new BankThread(Integer.parseInt(initParams.get("times")), params, logMap)).start();
 				}
 			}
 		}
-		return "success";
+		return response;
 	}
 
 	@RequestMapping(value = "/submitWednesDay", method = RequestMethod.POST)
-	public String submitWednesDay (HttpServletRequest request, HttpSession httpSession) {
+	@ResponseBody
+	public LocalResponse submitWednesDay (HttpServletRequest request, HttpSession httpSession) {
 		switchActivity = true;
+		LocalResponse response = new LocalResponse();
+		StringBuffer output = new StringBuffer();
 		String userStr2 = request.getParameter("userStr2");
 		String[] user2Array = userStr2.split(",");
-		String[] product2Array = request.getParameterValues("product2Box");
+		String[] product2Array = request.getParameter("product2Box").split(",");
 		Map<String, String> initParams = paramService.getParamMap();
 		Map<String, Product1> product1Map = (Map<String, Product1>)httpSession.getAttribute("product2Map");
+		ExecutorService pool = Executors.newFixedThreadPool(10);
 		for (int i = 0; i < user2Array.length; i++) {
 			if (StringUtils.isNotBlank(user2Array[i])) {
 				User userBean = userService.findUserByUserId(user2Array[i]);
@@ -310,11 +323,22 @@ public class ProductController {
 					Map<String, String> logMap = new HashedMap();
 					logMap.put("userName", userBean.getUserName());
 					logMap.put("productName", productBean.getProductName());
-					new Thread(new BankThread(Integer.parseInt(initParams.get("times")), params, logMap)).start();
+
+					try {
+						Callable callable = new BankThread(Integer.parseInt(initParams.get("times")), params, logMap);
+						Future future = pool.submit(callable);
+						output.append(future.get() + "</br>");
+						response.setData(output.toString());
+						System.out.println(">>" + future.get());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+//					new Thread(new BankThread().start();
 				}
 			}
 		}
-		return "success";
+
+		return response;
 	}
 
 	@RequestMapping(value = "/stop")

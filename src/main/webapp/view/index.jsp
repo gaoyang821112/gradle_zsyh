@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ZMoffice
-  Date: 2016/5/25
-  Time: 18:07
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -18,20 +11,62 @@
         $(document).ready(function () {
             $('#button1').click(function () {
                 var userStr = '';
+                var productStr = '';
                 $('#userGroup :checkbox:checked').each(function () {
                     userStr += $(this).attr("id") + ",";
                 });
-                $('#userStr1').val(userStr);
-                $("#form1").submit();
+                $('#productGroup1 :checkbox:checked').each(function () {
+                    productStr += $(this).attr("id") + ",";
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "submit3hour",
+                    dataType: "json",
+                    scriptCharset: 'utf-8',
+                    data: { "userStr1": userStr, "product1Box": productStr},
+                    success: function (data) {
+                        $('#positionWindow p').html(data.data);
+                        $('#showLog').click();
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert(textStatus);
+                    }
+                });
+//                $('#userStr1').val(userStr);
+//                $("#form1").submit();
             });
 
             $('#button2').click(function () {
                 var userStr = '';
+                var productStr = '';
                 $('#userGroup :checkbox:checked').each(function () {
                     userStr += $(this).attr("id") + ",";
                 });
-                $('#userStr2').val(userStr);
-                $("#form2").submit();
+                $('#productGroup2 :checkbox:checked').each(function () {
+                    productStr += $(this).attr("id") + ",";
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "submitWednesDay",
+                    dataType: "json",
+                    scriptCharset: 'utf-8',
+                    data: { "userStr2": userStr, "product2Box": productStr},
+                    success: function (data) {
+                        $('#positionWindow p').html(data.data);
+                        $('#showLog').click();
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert(textStatus);
+                    }
+                });
+//                $('#userStr2').val(userStr);
+//                $("#form2").submit();
             });
             $('#buttonStop').click(function () {
                 $.get("stop");
@@ -100,13 +135,11 @@
             </div>
             <button id="buttonStop" class="ui-btn ui-shadow" type="button">停止所有</button>
         </div>
-
-        <div id="log-container">
-            <div>
-
-            </div>
+        </br>
+        <a id="showLog" href="#positionWindow" class="ui-btn ui-shadow" data-rel="popup" data-position-to="window">日志显示</a>
+        <div data-role="popup" id="positionWindow" class="ui-content" data-theme="a">
+            <p>no log</p>
         </div>
-
     </div>
 </body>
 </html>
