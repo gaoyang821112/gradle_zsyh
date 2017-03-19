@@ -37,6 +37,10 @@ public class UserService {
 		return mongoTemplate.findAll(BaojieUser.class, PRODUCT_BAOJIE_USER_COLLECTION);
 	}
 
+	public DianPingUser findDianpingUserByTel(String tel) {
+		return mongoTemplate.findOne(new Query(Criteria.where("tel").is(tel)), DianPingUser.class, PRODUCT_DIANPING_USER_COLLECTION);
+	}
+
 	public List<DianPingUser> getDianPingList() {
 		return mongoTemplate.findAll(DianPingUser.class, PRODUCT_DIANPING_USER_COLLECTION);
 	}

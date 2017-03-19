@@ -61,7 +61,9 @@ dependencies {
 
             'javax.websocket:javax.websocket-api:1.1',
 
-            'junit:junit:4.11'
+            'junit:junit:4.11',
+
+            'org.apache.poi:poi:3.9'
 
 //            'net.sourceforge.tess4j:tess4j:3.2.1',
 //

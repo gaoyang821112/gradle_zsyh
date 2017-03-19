@@ -244,6 +244,56 @@ public class HttpUtils {
 		}
 		return result;
 	}
+
+	public static String sendTaobaokeGet(String url) {
+		String result = "";
+		BufferedReader in = null;
+		try {
+			String urlNameString = url;
+			URL realUrl = new URL(urlNameString);
+			URLConnection connection = realUrl.openConnection();
+			connection.setRequestProperty(":authority", "detail.tmall.com");
+			connection.setRequestProperty(":method", "GET");
+			connection.setRequestProperty(":path", url);
+			connection.setRequestProperty(":scheme", "https");
+			connection.setRequestProperty("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+			connection.setRequestProperty("accept-encoding", "deflate, sdch, br");
+			connection.setRequestProperty("accept-language", "zh-CN,zh;q=0.8");
+			connection.setRequestProperty("cache-control", "max-age=0");
+			connection.setRequestProperty("cookie", "thw=cn; miid=875413649462218552; uc2=wuf=https%3A%2F%2Ftrade.tmall.com%2Fdetail%2ForderDetail.htm%3Fspm%3Da220l.12.0.0.atnF74%26null%3Dnull%26bizOrderId%3D2617231387716326; _uab_collina=148924472113707239909363; v=0; ctoken=vfwVZcYM1kp0tu5waeVLiceland; uc3=sg2=VFPrdW8zoyGQ3KyjElSjWTC3LvsYop%2BrezdEhfx%2BNoQ%3D&nk2=tYqFc05l1rsSJzIwyVU%3D&id2=VAStVnLdLZMV&vt3=F8dARVWNUnzfXFmAaJM%3D&lg2=UtASsssmOIJ0bQ%3D%3D; existShop=MTQ4OTQ3Mzg0NA%3D%3D; uss=UtAEEYwJEpUbq1m4EhL1zenU1EuZRmYa%2BiyeUNqY0rbshiXszyM9bKWUZQ%3D%3D; lgc=%5Cu81F3%5Cu7231%5Cu53D1%5Cu5982%5Cu96EA0204; tracknick=%5Cu81F3%5Cu7231%5Cu53D1%5Cu5982%5Cu96EA0204; cookie2=4a6bc6a76997616f92dad083949325b7; sg=485; mt=np=&ci=0_1; cookie1=VAYq3MRGHGDP5x1T8NO7TJdAd5pYsi720ritNXzDczI%3D; unb=757232148; skt=bad2079c2ef6ca0f; t=cc58407bf4e4e0c33218bf3c4d039458; _cc_=U%2BGCWk%2F7og%3D%3D; tg=0; _l_g_=Ug%3D%3D; _nk_=%5Cu81F3%5Cu7231%5Cu53D1%5Cu5982%5Cu96EA0204; cookie17=VAStVnLdLZMV; linezing_session=pLDIhREdo7wsNtwV1A35ngMt_1489473878511TuGG_1; _tb_token_=ebb5ee54b6301; uc1=cookie14=UoW%2FVObws7d28g%3D%3D&lng=zh_CN&cookie16=VFC%2FuZ9az08KUQ56dCrZDlbNdA%3D%3D&existShop=false&cookie21=UtASsssme%2BBq&tag=2&cookie15=U%2BGCWk%2F75gdr5Q%3D%3D&pas=0; cna=bLxGETrQ7w4CAX0jM6IPFKhw; _umdata=0823A424438F76ABB0E6774F9F8A8DCB971FFE887666C70C5B2EEA7F1FE2DE37EE97D7A5A6C1610FCD43AD3E795C914C4D042EC9DFA2C6DFC8268D19426E80C3; l=AkxMGsYfWqpBSW7Ox47QoO8WnKB-hfAv; isg=AnR0o6E5kGAvVgQp2zGsuRWPRTT_tpg3gNy9CA7VAP-CeRTDNl1oxyq7jwZb");
+//			connection.setRequestProperty("refer", "https://s.click.taobao.com/t_js?tu=https%3A%2F%2Fs.click.taobao.com%2Ft%3Fspm%3Da311n.8189758%2Fa.90200000.1.432ZJD%26e%3Dm%253D2%2526s%253DFALaBssK1t5w4vFB6t2Z2ueEDrYVVa64LKpWJ%252Bin0XLjf2vlNIV67qmQRxWEeB19Nq%252BDna%252F8eQepSO1rEcg0b8LN6jK7NHy78hWRy4bCQTYQd0cc4xbQVFKrHkWq9YOLwd3%252F8TPoKJgwqccMEwZVKxKihrUHtpJuYM7FHiwA1nbNkn9R3PC9OI1GG7Jaai63zQG%252BCWQ69P1YdC0Lyzdv9cYOae24fhW0%26pvid%3D11_58.31.14.111_1369_1489422947754%26ref%3Dhttps%253A%252F%252Fuland.taobao.com%252Fcoupon%252Fedetail%253Fe%253DGyIHiUeO40oN%25252BoQUE6FNzBenlb4YusJVQRgq5ELCLwZxZ778529PF%25252FkV8Ovtq%25252BCjRPai36SzjGQYGBU%25252BUYnml0YUejVMpzGc7sRUcQe1PUdw8qc1XLan0YgD8TGIivUFwexwE9iPmnf9jfeG5Bp2avNVXe6BDqYX%2526pid%253Dmm_120456803_22352448_74180429%2526af%253D1%26et%3DcEheJbOZekpD2AX%252Fie57NyH3gjAHuotM");
+			connection.setRequestProperty("accept-encoding", "deflate, sdch, br");
+			connection.setRequestProperty("upgrade-insecure-requests", "1");
+			connection.setRequestProperty("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+			connection.connect();
+			Map map = connection.getHeaderFields();
+//			for (Object key : map.keySet()) {
+//				System.out.println(key + "--->" + map.get(key));
+//			}
+			in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result = result + line;
+			}
+		} catch (Exception e) {
+			System.out.println("发送GET请求出现异常！" + e);
+			e.printStackTrace();
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return result;
+	}
 	
 	public static String sendGet4ShiHui(String url, ShiHuiHttpParams param) {
 		String result = "";
@@ -588,6 +638,70 @@ public class HttpUtils {
 			connection.setRequestProperty("X-Request","JSON");
 			connection.setRequestProperty("X-Requested-With","XMLHttpRequest");
 			connection.setRequestProperty("Cookie", "_hc.v=\"\\\"2000748c-0f57-47e5-b980-dc70e57ab20d.1472525902\\\"\"; dper=" + user.getDper() + "; ua=" + user.getUa() + "; checkInCloseState=ignored; likeTips=ignored; __utma=1.1676118817.1472525940.1476200547.1476338775.12; __utmc=1; __utmz=1.1476200547.11.2.utmcsr=dianping.com|utmccn=(referral)|utmcmd=referral|utmcct=/beijing; ll=7fd06e815b796be3df069dec7836c3df; PHOENIX_ID=0a0102f6-157bca62826-e8532; isChecked=checked; JSESSIONID=2BE2C723CFE01082C220EE2A22D06E62; aburl=1; cy=2; cye=beijing");
+			connection.connect();
+			in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result = result + line;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+
+
+	public static String setXiaobawangRequest(Map<String, String> paramMap, DianPingUser user) {
+		String paramUrl = "";
+		StringBuffer strbuffer = new StringBuffer();
+		String result = "";
+		BufferedReader in = null;
+		try {
+
+			if ((paramMap != null) && (paramMap.size() > 0)) {
+				for (Map.Entry entry : paramMap.entrySet()) {
+					String key = String.valueOf(entry.getKey());
+					String value = String.valueOf(entry.getValue());
+					strbuffer.append(key);
+					strbuffer.append("=");
+					strbuffer.append(value);
+					strbuffer.append("&");
+				}
+				paramUrl = strbuffer.toString();
+				paramUrl = paramUrl.substring(0, paramUrl.length() - 1);
+			}
+			String url = "https://act.dianping.com/customized/citic/lottery?" + paramUrl;
+			URL realUrl = new URL(url);
+			URLConnection connection = realUrl.openConnection();
+			connection.setRequestProperty("Host","act.dianping.com");
+			connection.setRequestProperty("Accept","*/*");
+			connection.setRequestProperty("Connection","keep-alive");
+			connection.setRequestProperty("Cookie", "ctu=" + user.getCtu() + "; dper=" + user.getDper() + "; ll=7fd06e815b796be3df069dec7836c3df; ua=" + user.getUa() + "; PHOENIX_ID=0a030e6b-15ada20d047-405de2b; m_flash2=1; pvhistory=\\\"\"6L+U5ZuePjo8L2dldGxvY2FsY2l0eWlkP2xhdD0zOS45MzAwMjAwMjE3NzQyMSZsbmc9MTE2LjQ1MDQ2MDE1OTE0NjkmY2FsbGJhY2s9V2hlcmVBbUkxMTQ4OTcxODI2NzI5OT46PDE0ODk3MTgyNjc5NzhdX1s=\\\"\"; geoType=wgs84; locallat=39.93002002177421; locallng=116.4504601591469; _hc.v=75c75ba9-9c80-653c-e865-e26473d60ff8.1489718266");
+			connection.setRequestProperty("User-Agent","Mozilla/5.0 (iPhone; CPU iPhone OS 10_2_1 like Mac OS X) AppleWebKit/602.4.6 (KHTML, like Gecko) Mobile/14D27 DKKJ/4.0.3");
+			connection.setRequestProperty("Referer","https://evt.dianping.com/midas/1activities/a7037Ie879zZAlYYQ/index.html");
+			connection.setRequestProperty("Accept-Encoding","gzip, deflate");
+			connection.setRequestProperty("Content-Type","application/javascript; charset=utf-8");
+
+
+//			connection.setRequestProperty("Accept-Language","zh-CN,zh;q=0.8");
+//			connection.setRequestProperty("Content-Length","251");
+//			connection.setRequestProperty("Origin","http://s.dianping.com");
+//			connection.setRequestProperty("X-Request","JSON");
+//			connection.setRequestProperty("X-Requested-With","XMLHttpRequest");
 			connection.connect();
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
 			String line;
