@@ -213,11 +213,11 @@ public class DianPingController {
             }
             paramMap.put("mobile", mobile);
             paramMap.put("type", "fnHvGYyzrswY");
-            paramMap.put("env", "");
+            paramMap.put("env", "job");
             paramMap.put("job", "");
             paramMap.put("dpid", "");
             paramMap.put("cxString", "");
-            paramMap.put("callback", "jsonp2");
+            paramMap.put("callback", "jsonp4");
             String result = HttpUtils.setXiaobawangRequest(paramMap, user);
             System.out.println(user.getUserName() + "报名：" + "小霸王" + " 结果：" + result);
         }
